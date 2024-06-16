@@ -89,6 +89,7 @@ const HomePage = () => {
     };
     getAllTransetion();
   }, [frequency, selectedDate, type]);
+  handleeditable
   //delete handler
   const handleDelete = async (record) => {
     try {
@@ -109,31 +110,17 @@ const HomePage = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
-      if (editable) {
-        await axios.post("/transections/edit-transections", {
-          payload: {
-            ...values,
-            userid: user._id,
-          },
-          transactionId: editable._id,
-        });
-        setLoading(false);
-        message.success("Transection updated Successfully");
-      } else {
-        await axios.post("/transections/edit-transections", {
-          ...values,
-          userid: user._id,
-        });
-        setLoading(false);
-        message.success("Transection Added Successfully");
-      }
+      await axios.post("/transections/add-transections", {
+        ...values,
+        userid: user._id,
+      });
+      setLoading(false);
+      message.success("Transection Added Successfully");
       setShowModal(false);
-      setEditable(null);
     } catch (error) {
       setLoading(false);
       message.error("Failed to add transection");
     }
-  };
   return (
     <Layout>
       {loading && <Spinner />}
